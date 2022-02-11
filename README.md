@@ -1,4 +1,4 @@
-# CommonUtils
+# iOSCommonUtils
 
 My commonly used utilities
 
