@@ -33,6 +33,15 @@ open class KBShifterViewController: UIViewController{
         kbData.moreOffset = moreOffset
     }
     
+    public var moreOffset: CGFloat{
+        set{
+            kbData.moreOffset = newValue
+        }
+        get{
+            kbData.moreOffset
+        }
+    }
+    
     public func unSubscribe(){
         kbData.currentUIView = nil
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)

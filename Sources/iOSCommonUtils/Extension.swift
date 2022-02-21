@@ -7,6 +7,7 @@
 import Foundation
 
 public extension String{
+    /// parse raw string to localize sting
     func toNSL() -> String{
         return NSLocalizedString(self, comment: "NS_\(self)")
     }

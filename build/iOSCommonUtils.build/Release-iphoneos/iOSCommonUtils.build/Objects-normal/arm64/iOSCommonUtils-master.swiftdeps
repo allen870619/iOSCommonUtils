@@ -1,0 +1,14 @@
+version: "Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)"
+options: "279bce955140e95aa56661f014e9bac4aeb0849ca2fe8356d5c70a22d6f90568"
+build_start_time: [1645412288, 107037067]
+build_end_time: [1645412293, 79951047]
+inputs:
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/AlertCtrller.swift": !dirty [1644979533, 546780109]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/CommonUtils.swift": !dirty [1644976586, 982180595]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/Date.swift": !dirty [1644566839, 620587110]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/Extension.swift": !dirty [1644978395, 610633134]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/Images.swift": !dirty [1644566839, 620839118]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/Keyboard.swift": !dirty [1645088527, 233708620]
+  "/Users/allen/Program/iOSProject/iOSCommonUtils/Sources/iOSCommonUtils/View.swift": !dirty [1644566839, 621691226]
+  ? "/Users/allen/Program/iOSProject/iOSCommonUtils/build/iOSCommonUtils.build/Release-iphoneos/iOSCommonUtils.build/DerivedSources/resource_bundle_accessor.swift"
+  : !dirty [1645412288, 21675109]

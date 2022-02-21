@@ -33,10 +33,9 @@ public class AlertCtrller{
     /**
      loading alert
      */
-    public static func waitingAlert(_ targetVC: UIViewController,
-                                    title: String,
-                                    mode: String? = nil,
-                                    animation: AnimationView? = nil) -> UIAlertController{
+    public static func waitingAlert(title: String,
+                                    animation: AnimationView? = nil,
+                                    traitStyle: UIUserInterfaceStyle = .light) -> UIAlertController{
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         
         // animation
@@ -44,7 +43,7 @@ public class AlertCtrller{
             alert.view.addSubview(animation)
         }else{
             var loading = Animation.named("loading_3", bundle: Bundle.module)
-            if targetVC.traitCollection.userInterfaceStyle == .dark{
+            if traitStyle == .dark{
                 loading = Animation.named("loading_3_dark", bundle: Bundle.module)
             }
             
