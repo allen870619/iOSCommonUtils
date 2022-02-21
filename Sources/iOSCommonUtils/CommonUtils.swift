@@ -38,6 +38,6 @@ public class Line{
     }
 }
 
-func test() -> String{
+private func test() -> String{
     return "Hello, World!"
 }
