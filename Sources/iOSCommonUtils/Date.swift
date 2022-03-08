@@ -49,9 +49,29 @@ public extension Date{
     }
     
     /// year
-    func year() -> Int{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy"
-        return Int(dateFormatter.string(from: self)) ?? -1
+    var year: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
+    }
+    
+    /// month
+    var month: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
+    }
+    
+    /// day
+    var day: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
     }
 }
