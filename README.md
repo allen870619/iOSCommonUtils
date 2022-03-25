@@ -2,15 +2,34 @@
 
 My commonly used utilities
 
-Included:
-#### 1. AlertController
-#### 2. Line Msg share
-#### 3. Date
-#### 4. String NSLocalized
-#### 5. Image resize
-#### 6. Keyboard shifter
-#### 7. UIView
-
+## Features
+* AlertController
+* Date
+* Some UIKit tools or extension
+* Values tools (String, Double...etc)
+* Keyboard shifter
 
 ## Dependencies
-1. lottie
+* lottie
+
+## Installation
+SPM
+```
+dependencies: [
+    .package(url: "https://github.com/allen870619/iOSCommonUtils.git", from: "version-tag")
+]
+```
+
+
+## How to use
+Checkout [wiki](https://github.com/allen870619/iOSCommonUtils/wiki) here.
+
+## License
+MIT.
+
+## Author
+[Me!](https://github.com/allen870619)
+
+
+## Welcome to modified and reuse!
+

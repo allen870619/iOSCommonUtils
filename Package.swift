@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,14 +14,14 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(name: "Lottie", url: "https://github.com/airbnb/lottie-ios.git", from: "3.3.0")
+        .package(url: "https://github.com/airbnb/lottie-ios.git", from: Version(3, 3, 0))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "iOSCommonUtils",
-            dependencies: ["Lottie"],
+            dependencies: [.product(name: "Lottie", package: "lottie-ios")],
             resources: [.process("Resources")]),
         .testTarget(
             name: "iOSCommonUtilsTests",
