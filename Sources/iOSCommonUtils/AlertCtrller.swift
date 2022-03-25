@@ -10,9 +10,7 @@ import UIKit
 import Lottie
 
 public class AlertCtrller{
-    /**
-     single hint alert, for cancel/do something
-     */
+    /// single hint alert, for cancel/do something
     public static func hintAlert(title: String,
                                  message: String? = nil,
                                  preferredStyle: UIAlertController.Style = .alert,
@@ -30,9 +28,7 @@ public class AlertCtrller{
         return alert
     }
     
-    /**
-     loading alert
-     */
+    /// loading alert
     public static func waitingAlert(title: String,
                                     animation: AnimationView? = nil,
                                     traitStyle: UIUserInterfaceStyle = .light) -> UIAlertController{
@@ -49,7 +45,7 @@ public class AlertCtrller{
             
             let animationView = AnimationView()
             animationView.frame = CGRect(x: 0, y: 0, width: 48, height: 48)
-            animationView.center = CGPoint(x: 135, y: 90) // alertView's width is 270 , no why
+            animationView.center = CGPoint(x: 135, y: 90) // alertView's width is 270
             animationView.animation = loading
             animationView.loopMode = .loop
             animationView.backgroundBehavior = .pauseAndRestore
@@ -63,9 +59,7 @@ public class AlertCtrller{
         return alert
     }
     
-    /**
-     progress alert
-     */
+    /// progress alert
     public static func progressAlert(title: String,
                                      message: String? = nil,
                                      initVal: Float = 0)-> CustomProgressAlert{
