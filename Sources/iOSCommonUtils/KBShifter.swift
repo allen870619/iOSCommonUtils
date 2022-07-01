@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  KBShifterViewController.swift
 //  
 //
 //  Created by Lee Yen Lin on 2022/2/10.
@@ -29,9 +29,11 @@ open class KBShifterViewController: UIViewController{
     /*
      Steps
      1. Set desire shift mode.
-     2. Set target view when some inputView begin edit. (no needed for kbHeight)
-     (optional)  set moreOffset, default = 0
-     3. Kill observer when leave.
+     2. Set target view
+        - absolute, safeArea: set when inputView begin edit
+        - scrollView: set at first init only.
+        - kbHeight: no need to do anything.
+        (optional)  set moreOffset, default = 0
      */
     public var shiftMode: ShiftMode = .safeArea{
         didSet{
