@@ -1,3 +1,8 @@
+![Release](https://img.shields.io/github/release-date/allen870619/iOSCommonUtils?color=blue)
+![Lang](https://img.shields.io/badge/Lang-Swift-orange)
+![LastCommit](https://img.shields.io/github/last-commit/allen870619/iOSCOmmonUtils?style=flat)
+![Release](https://img.shields.io/github/v/release/allen870619/iOSCommonUtils)
+
 # iOSCommonUtils
 
 My commonly used utilities
