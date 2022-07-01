@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  KBShifterViewController.swift
 //  
 //
 //  Created by Lee Yen Lin on 2022/2/10.
@@ -9,16 +9,32 @@ import Foundation
 import UIKit
 
 open class KBShifterViewController: UIViewController{
-    fileprivate var kbData = KeyboardData()
     
     // set mode
     public enum ShiftMode{
+        /**
+         All method's shift space are the height of the range been covered by keyboard + 16. (except kbHieght)
+         shift = (covered height) + 16 + moreOffset(default 0)
+         */
+        // Use when view align to superview
         case absolute
+        // Use when view align to safe area
         case safeArea
+        // for scrollView
         case scrollView
+        // Fixed, shift = keyboard height
         case kbHeight
     }
     
+    /*
+     Steps
+     1. Set desire shift mode.
+     2. Set target view
+        - absolute, safeArea: set when inputView begin edit
+        - scrollView: set at first init only.
+        - kbHeight: no need to do anything.
+        (optional)  set moreOffset, default = 0
+     */
     public var shiftMode: ShiftMode = .safeArea{
         didSet{
             unSubscribe()
@@ -33,6 +49,7 @@ open class KBShifterViewController: UIViewController{
         kbData.moreOffset = moreOffset
     }
     
+    // more offset for shift
     public var moreOffset: CGFloat{
         set{
             kbData.moreOffset = newValue
@@ -42,11 +59,15 @@ open class KBShifterViewController: UIViewController{
         }
     }
     
+    // kill observer
     public func unSubscribe(){
         kbData.currentUIView = nil
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    /** private parts*/
+    fileprivate var kbData = KeyboardData()
     
     /* move up screen when showing keyboard */
     @objc public func keyboardWillShow(note: NSNotification) {
@@ -58,43 +79,49 @@ open class KBShifterViewController: UIViewController{
         // shift detect
         if shiftMode == .kbHeight{
             let shift :CGFloat = kbHeight + kbData.moreOffset
-            UIView.animate(withDuration: duration){[self] in
-                self.additionalSafeAreaInsets.bottom = shift
-                self.view.layoutIfNeeded()
+            UIView.animate(withDuration: duration){ [weak self] in
+                self?.additionalSafeAreaInsets.bottom = shift
+                self?.view.layoutIfNeeded()
             }
             return
         }
         
         if let currentView = kbData.currentUIView {
+            // clear previous shift
+            if shiftMode == .safeArea{
+                additionalSafeAreaInsets.bottom = 0
+                view.layoutIfNeeded()
+            }else if shiftMode == .absolute{
+                view.frame = view.frame.offsetBy(dx: 0, dy: -view.frame.origin.y)
+            }
+            
             // target view
-            let targetY = currentView.superview?.convert(currentView.frame, to: self.view).maxY ?? 0
+            let targetY = view.convert(currentView.frame, to: view).maxY
             let visibleRectWithoutKeyboard = ViewUtils.screenHeight - kbHeight
+            let coverHeight = targetY - visibleRectWithoutKeyboard
             
             // check whether has been covered
-            if targetY >= visibleRectWithoutKeyboard {
+            if coverHeight >= 0 {
                 switch shiftMode{
                 case .safeArea:
-                    let shift :CGFloat = (targetY - visibleRectWithoutKeyboard) + kbData.offset + kbData.moreOffset
-                    UIView.animate(withDuration: duration){[self] in
-                        self.additionalSafeAreaInsets.bottom = shift
-                        self.view.layoutIfNeeded()
+                    let shift = coverHeight + kbData.offset + kbData.moreOffset
+                    UIView.animate(withDuration: duration){[weak self] in
+                        self?.additionalSafeAreaInsets.bottom = shift
+                        self?.view.layoutIfNeeded()
                     }
-                    
                 case .scrollView:
                     guard let scrollView = kbData.currentUIView as? UIScrollView else{
                         return
                     }
-                    let navShift = self.navigationController?.navigationBar.frame.maxY ?? 0
-                    scrollView.contentInset.bottom = targetY - visibleRectWithoutKeyboard + kbData.offset + kbData.moreOffset + navShift
-                    
-                case .absolute: // not recommand
-                    var rect = self.view.frame
-                    /* 計算上移距離 */
-                    rect.origin.y -= (targetY - visibleRectWithoutKeyboard) + kbData.offset + kbData.moreOffset
-                    UIView.animate(withDuration: duration){
-                        self.view.frame = rect
+                    scrollView.contentInset.bottom = coverHeight + kbData.offset + kbData.moreOffset
+                case .absolute: // not recommended
+                    var rect = view.frame
+                    let saveAreaBot = ViewUtils.safeAreaInsets?.bottom ?? 0
+                    let shift = coverHeight + kbData.offset + kbData.moreOffset
+                    rect.origin.y = -(shift + saveAreaBot)
+                    UIView.animate(withDuration: duration){[weak self] in
+                        self?.view.frame = rect
                     }
-                    
                 case .kbHeight:
                     break
                 }
@@ -104,41 +131,30 @@ open class KBShifterViewController: UIViewController{
     
     /* move down screen when showing keyboard */
     @objc public func keyboardWillHide(note: NSNotification) {
-        /* 鍵盤隱藏時將畫面下移回原樣 */
         let keyboardAnimationDetail = note.userInfo as! [String: AnyObject]
         let duration = TimeInterval(truncating: keyboardAnimationDetail[UIResponder.keyboardAnimationDurationUserInfoKey]! as! NSNumber)
-        UIView.animate(withDuration: duration){[self] in
-            switch shiftMode{
+        
+        UIView.animate(withDuration: duration){[weak self] in
+            switch self?.shiftMode{
             case .safeArea, .kbHeight:
-                self.additionalSafeAreaInsets.bottom = 0
-                self.view.layoutIfNeeded()
+                self?.additionalSafeAreaInsets.bottom = 0
+                self?.view.layoutIfNeeded()
             case .scrollView:
-                guard let scrollView = kbData.currentUIView as? UIScrollView else{
-                    return
-                }
-                scrollView.contentInset.bottom = .zero
+                (self?.kbData.currentUIView as? UIScrollView)?.contentInset.bottom = .zero
             case .absolute:
-                if self.view.frame.origin.y < 0{
-                    self.view.frame = self.view.frame.offsetBy(dx: 0, dy: -self.view.frame.origin.y)
+                if let vc = self{
+                    if vc.view.frame.origin.y < 0{
+                        self?.view.frame = vc.view.frame.offsetBy(dx: 0, dy: -vc.view.frame.origin.y)
+                    }
                 }
+            case .none:
+                break
             }
         }completion: { [self] _ in
-            if shiftMode != .scrollView && shiftMode != .kbHeight{
-                kbData.currentUIView = nil
+            if !(kbData.currentUIView is UIScrollView) && shiftMode != .scrollView{
+                kbData.currentUIView = nil // clear target view
             }
         }
-    }
-}
-
-public extension UIViewController{
-    func tapToHideKeyboard() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
     }
 }
 
