@@ -81,7 +81,8 @@ open class KBShifterViewController: UIViewController{
         
         // shift detect
         if shiftMode == .kbHeight{
-            let shift :CGFloat = kbHeight + kbData.moreOffset
+            let safeBottom = ViewUtils.safeAreaInsets?.bottom ?? 0
+            let shift :CGFloat = kbHeight + kbData.moreOffset - safeBottom
             UIView.animate(withDuration: duration){ [weak self] in
                 self?.additionalSafeAreaInsets.bottom = shift
                 self?.view.layoutIfNeeded()
