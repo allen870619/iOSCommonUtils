@@ -74,7 +74,7 @@ final public class CustomProgressAlert: UIAlertController{
     private let progressView = UIProgressView(frame: CGRect(x: 0, y: 0, width: 238, height: 6))
     
     // progress value
-    var progressVal : Float{
+    public var progressVal : Float{
         get{
             return progressView.progress
         }
@@ -83,7 +83,7 @@ final public class CustomProgressAlert: UIAlertController{
         }
     }
     
-    var progressColor : UIColor?{
+    public var progressColor : UIColor?{
         set{
             progressView.progressTintColor = newValue
         }
