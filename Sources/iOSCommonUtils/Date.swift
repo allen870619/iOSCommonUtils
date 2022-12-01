@@ -93,6 +93,33 @@ public extension Date{
         }
     }
     
+    /// hour
+    var hour: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
+    }
+    
+    /// minute
+    var minute: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "mm"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
+    }
+    
+    /// second
+    var second: Int{
+        get{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "ss"
+            return Int(dateFormatter.string(from: self)) ?? -1
+        }
+    }
+    
     /// total days of Month
     var daysInMonth: Int{
         get{
